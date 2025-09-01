@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tagarela — Comunicação que inclui</title>
+  <meta name="description" content="Tagarela é uma plataforma simples e inclusiva que apoia a comunicação de crianças e pessoas com dificuldades de fala, conectando famílias, terapeutas e escolas." />
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root {
+      --brand: #B880E5; /* lilás */
+      --accent: #D66025; /* laranja */
+      --bg: #0f0f12;
+      --card: #14141a;
+      --text: #e9e9f0;
+      --muted: #b9b9c6;
+      --ring: 0 0 0 3px color-mix(in oklab, var(--brand), white 25%);
+      --radius: 18px;
+      --shadow: 0 10px 25px rgba(0,0,0,.25);
+      --grid-max: 1200px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root { --bg: #ffffff; --card: #f7f7fb; --text: #1b1b1f; --muted: #53536a; }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -10%, color-mix(in oklab, var(--brand), transparent 65%), transparent 60%),
+                  radial-gradient(1000px 700px at -10% 10%, color-mix(in oklab, var(--accent), transparent 70%), transparent 60%),
+                  var(--bg);
+      line-height: 1.6;
+    }
+
+    /* Layout */
+    .container { width: min(var(--grid-max), 92%); margin-inline: auto; }
+    .section { padding: clamp(56px, 8vw, 110px) 0; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 60;
+      backdrop-filter: saturate(1.1) blur(8px);
+      background: color-mix(in oklab, var(--bg), transparent 40%);
+      border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 92%);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo {
+      width: 40px; height: 40px; display: grid; place-items: center; font-weight: 900;
+      background: conic-gradient(from 210deg, var(--brand), var(--accent));
+      color: white; border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .brand span { font-weight: 800; letter-spacing: .3px; color: var(--text); }
+
+    nav ul { list-style: none; display: flex; gap: clamp(8px, 3vw, 24px); margin: 0; padding: 0; }
+    nav a { color: var(--text); text-decoration: none; opacity: .9; font-weight: 600; }
+    nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+
+    .cta-row { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      --bgc: var(--brand);
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 12px 18px; border-radius: 999px; color: white; font-weight: 800; text-decoration: none;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--bg), var(--bg) 6%), var(--bg)) padding-box,
+                  linear-gradient(135deg, var(--brand), var(--accent)) border-box;
+      border: 2px solid transparent; box-shadow: var(--shadow);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); filter: saturate(1.05); }
+    .btn--ghost { color: var(--text); background: transparent; border: 2px solid color-mix(in oklab, var(--text), transparent 85%); box-shadow: none; }
+
+    .menu-toggle { display: none; border: 0; background: transparent; color: var(--text); font-size: 26px; }
+
+    @media (max-width: 840px) {
+      nav ul { display: none; position: absolute; right: 4%; top: 60px; flex-direction: column; padding: 16px; background: var(--card); border-radius: 16px; box-shadow: var(--shadow); width: min(260px, 86vw); }
+      nav ul.open { display: flex; }
+      .menu-toggle { display: inline-grid; }
+    }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(20px, 5vw, 50px); align-items: center; }
+    .hero h1 { font-size: clamp(28px, 5vw, 54px); line-height: 1.05; margin: 6px 0 12px; }
+    .hero p { font-size: clamp(16px, 2.2vw, 20px); color: var(--muted); margin: 0 0 22px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; font-weight: 700; background: color-mix(in oklab, var(--brand), transparent 78%); color: var(--text); border: 1px solid color-mix(in oklab, var(--brand), transparent 60%); }
+
+    .mockup {
+      aspect-ratio: 4/3;
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, color-mix(in oklab, var(--card), white 4%), var(--card));
+      border: 1px solid color-mix(in oklab, var(--text), transparent 92%);
+      box-shadow: var(--shadow);
+      display: grid; place-items: center; padding: 16px;
+      position: relative; overflow: hidden;
+    }
+    .mockup::after {
+      content: "";
+      position: absolute; inset: -20% -40% auto auto; height: 120%; width: 70%; rotate: -18deg;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--brand), transparent 30%), color-mix(in oklab, var(--accent), transparent 20%));
+      filter: blur(40px); opacity: .6;
+    }
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 560px; }
+    .app-card { background: white; color: #1b1b1f; border-radius: 16px; padding: 10px 12px; font-weight: 800; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,.12); }
+    .app-card small { display: block; font-weight: 700; opacity: .6; }
+    @media (max-width: 960px) { .hero { grid-template-columns: 1fr; } .mockup { order: -1; } }
+
+    /* Features */
+    .kicker { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-weight: 800; font-size: 13px; }
+    h2 { font-size: clamp(24px, 4vw, 38px); margin: 6px 0 12px; line-height: 1.15; }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature {
+      background: linear-gradient(145deg, color-mix(in oklab, var(--card), white 4%), var(--card));
+      border: 1px solid color-mix(in oklab, var(--text), transparent 92%);
+      border-radius: var(--radius);
+      padding: 18px; box-shadow: var(--shadow);
+    }
+    .feature h3 { margin: 6px 0 6px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; border: 1px dashed color-mix(in oklab, var(--accent), transparent 50%); color: var(--accent); font-weight: 800; background: color-mix(in oklab, var(--accent), transparent 90%); }
+    @media (max-width: 960px) { .features { grid-template-columns: 1fr; } }
+
+    /* Inovação */
+    .innov { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: center; }
+    .innov-box { background: linear-gradient(145deg, color-mix(in oklab, var(--card), white 4%), var(--card)); border: 1px solid color-mix(in oklab, var(--text), transparent 92%); border-radius: var(--radius); padding: clamp(14px, 3vw, 22px); box-shadow: var(--shadow); }
+    .list { display: grid; gap: 10px; margin: 16px 0 0; }
+    .list li { list-style: none; display: grid; grid-template-columns: 28px 1fr; align-items: start; gap: 10px; }
+    .tick { width: 28px; height: 28px; border-radius: 999px; display: inline-grid; place-items: center; background: color-mix(in oklab, var(--brand), transparent 80%); border: 1px solid color-mix(in oklab, var(--brand), transparent 60%); font-weight: 900; }
+    @media (max-width: 960px) { .innov { grid-template-columns: 1fr; } }
+
+    /* Público */
+    .audiences { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .aud { background: linear-gradient(145deg, color-mix(in oklab, var(--card), white 4%), var(--card)); border: 1px solid color-mix(in oklab, var(--text), transparent 92%); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .aud h3 { margin: 0 0 8px; }
+    @media (max-width: 960px) { .audiences { grid-template-columns: 1fr; } }
+
+    /* Equipe */
+    .team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .person { background: linear-gradient(145deg, color-mix(in oklab, var(--card), white 4%), var(--card)); border: 1px solid color-mix(in oklab, var(--text), transparent 92%); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); display: grid; gap: 8px; }
+    .avatar { width: 72px; height: 72px; border-radius: 16px; background: linear-gradient(135deg, var(--brand), var(--accent)); display: grid; place-items: center; color: white; font-weight: 900; font-size: 22px; }
+    .role { font-weight: 800; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .08em; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { font-weight: 800; font-size: 12px; padding: 6px 10px; border-radius: 999px; background: color-mix(in oklab, var(--brand), transparent 85%); border: 1px solid color-mix(in oklab, var(--brand), transparent 60%); }
+    @media (max-width: 1100px) { .team { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .team { grid-template-columns: 1fr; } }
+
+    /* FAQ */
+    details { background: linear-gradient(145deg, color-mix(in oklab, var(--card), white 4%), var(--card)); border: 1px solid color-mix(in oklab, var(--text), transparent 92%); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
+    summary { cursor: pointer; font-weight: 800; }
+    details + details { margin-top: 10px; }
+
+    /* Contato */
+    form { display: grid; gap: 12px; }
+    label { font-weight: 700; }
+    input, textarea, select {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in oklab, var(--text), transparent 88%);
+      background: color-mix(in oklab, var(--bg), white 6%); color: var(--text);
+    }
+    input:focus, textarea:focus, select:focus { outline: none; box-shadow: var(--ring); border-color: transparent; }
+
+    /* Footer */
+    footer { border-top: 1px solid color-mix(in oklab, var(--text), transparent 90%); padding: 28px 0; color: var(--muted); }
+    .foot { display: grid; gap: 12px; align-items: center; grid-template-columns: 1fr auto; }
+    @media (max-width: 720px) { .foot { grid-template-columns: 1fr; } }
+
+    /* Utilities */
+    .center { text-align: center; }
+    .mb-0 { margin-bottom: 0; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Tagarela Home">
+        <div class="logo">Tg</div>
+        <span>Tagarela</span>
+      </a>
+
+      <button class="menu-toggle" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+
+      <nav>
+        <ul id="menu">
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#inovacao">Inovação</a></li>
+          <li><a href="#publico">Público</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+
+      <div class="cta-row">
+        <a class="btn" href="#contato">Agendar demo</a>
+        <a class="btn btn--ghost" href="#sobre">Ver mais</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="section">
+      <div class="container hero">
+        <div>
+          <span class="badge">Inclusão na prática • TEA • AFI</span>
+          <h1>Tagarela: comunicação aumentativa<br>simples, visual e acessível.</h1>
+          <p>
+            Criado para apoiar crianças autistas (com foco em <strong>Alterações na Função Intelectual – AFI</strong>) e pessoas com dificuldades de fala.
+            O Tagarela conecta <strong>terapeutas</strong>, <strong>escolas</strong> e <strong>famílias</strong> com um sistema de cartões visuais, frases por fila e relatórios de uso.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="#recursos">Começar agora</a>
+            <a class="btn btn--ghost" href="#inovacao">O que há de novo?</a>
+          </div>
+        </div>
+        <div class="mockup" aria-label="Prévia do aplicativo Tagarela">
+          <div class="cards-grid" aria-hidden="true">
+            <div class="app-card">COMER <small>Alimentos</small></div>
+            <div class="app-card">BEber <small>Bebidas</small></div>
+            <div class="app-card">DOR <small>Saúde</small></div>
+            <div class="app-card">BRINCAR <small>Lazer</small></div>
+            <div class="app-card">IR AO BANHEIRO <small>Rotina</small></div>
+            <div class="app-card">EU QUERO <small>Frases</small></div>
+            <div class="app-card">MÃE <small>Pessoas</small></div>
+            <div class="app-card">ESCOLA <small>Lugares</small></div>
+            <div class="app-card">AJUDA <small>Ações</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="section">
+      <div class="container grid-2">
+        <div>
+          <p class="kicker">Sobre o projeto</p>
+          <h2>Ferramenta de CAA feita com profissionais, para profissionais.</h2>
+          <p>
+            O Tagarela nasceu em clínicas e salas de aula. A interface é <strong>minimalista</strong>, com cartões de alto contraste, 
+            busca rápida e uma <strong>fila de frases</strong> que monta sentenças com um toque. Cada sessão pode gerar 
+            <strong>relatórios</strong> para orientar o trabalho terapêutico ao longo do tempo.
+          </p>
+          <p>
+            A plataforma não substitui terapeutas: ela <strong>potencializa</strong> o trabalho de fonoaudiólogos(as), psicopedagogos(as) 
+            e professores, facilitando o treino de comunicação funcional no cotidiano.
+          </p>
+          <div class="tags">
+            <span class="tag">Login & cadastro</span>
+            <span class="tag">Busca por cartões</span>
+            <span class="tag">Fila de frases</span>
+            <span class="tag">Relatórios</span>
+            <span class="tag">Interface minimalista</span>
+          </div>
+        </div>
+        <div class="innov-box">
+          <strong>Objetivos</strong>
+          <ul class="list">
+            <li><span class="tick">✓</span><span>Apoiar comunicação funcional com pictogramas e voz sintetizada.</span></li>
+            <li><span class="tick">✓</span><span>Promover autonomia e participação social.</span></li>
+            <li><span class="tick">✓</span><span>Entregar dados simples para pais e profissionais.</span></li>
+          </ul>
+          <div style="height:10px"></div>
+          <strong>Métricas de sucesso</strong>
+          <ul class="list">
+            <li><span class="tick">✓</span><span>Aumento de interações iniciadas pela criança.</span></li>
+            <li><span class="tick">✓</span><span>Redução de frustrações comunicativas reportadas.</span></li>
+            <li><span class="tick">✓</span><span>Uso consistente em casa e na escola.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECURSOS -->
+    <section id="recursos" class="section">
+      <div class="container">
+        <p class="kicker">Recursos principais</p>
+        <h2>Simples para quem usa, poderoso para quem cuida.</h2>
+        <div class="features">
+          <article class="feature">
+            <span class="chip">Cartões visuais</span>
+            <h3>Biblioteca com busca</h3>
+            <p>Encontre rapidamente cartões por categoria ou palavra-chave. Adapte símbolos ao repertório da criança e 
+            adicione imagens da família, escola e rotina.</p>
+          </article>
+          <article class="feature">
+            <span class="chip">Fila de frases</span>
+            <h3>Monte, fale e salve</h3>
+            <p>Toque para enviar cartões à fila, gere a fala em voz alta e salve expressões frequentes para acesso em 1 toque.</p>
+          </article>
+          <article class="feature">
+            <span class="chip">Relatórios</span>
+            <h3>Dados que ajudam</h3>
+            <p>Visualize sessões, categorias mais usadas e evolução de objetivos. Pensado para <em>terapeutas</em> e 
+            <em>responsáveis</em>, sem complicação.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- INOVAÇÃO -->
+    <section id="inovacao" class="section">
+      <div class="container innov">
+        <div>
+          <p class="kicker">Algo inovador</p>
+          <h2>Plano Adaptativo de Comunicação (PAC).</h2>
+          <p>
+            O PAC é um motor que ajusta automaticamente o conjunto de cartões exibidos com base no <strong>contexto</strong> (casa, escola, clínica) e no 
+            <strong>histórico de uso</strong>. Ele prioriza cartões de alta relevância e sugere novas combinações na fila de frases.
+          </p>
+          <ul class="list">
+            <li><span class="tick">★</span><span><strong>Contexto inteligente:</strong> alterna repertórios por localização/rotina definida pelo profissional.</span></li>
+            <li><span class="tick">★</span><span><strong>Assistente de frase:</strong> recomenda próximos cartões para completar a intenção comunicativa.</span></li>
+            <li><span class="tick">★</span><span><strong>Privacidade:</strong> todos os dados são anonimizados por padrão.</span></li>
+          </ul>
+        </div>
+        <div class="innov-box">
+          <h3 class="mb-0">Benefícios práticos</h3>
+          <p class="mb-0">Menos cliques, mais comunicação. Sessões mais fluidas e relatórios focados no que realmente importa.</p>
+          <div class="tags" style="margin-top: 10px">
+            <span class="tag">Rotinas</span>
+            <span class="tag">Sugestões</span>
+            <span class="tag">Anonimização</span>
+            <span class="tag">Offline-first*</span>
+          </div>
+          <small>*Quando a rede cai, o essencial continua funcionando. Depois, sincroniza.</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÚBLICO-ALVO -->
+    <section id="publico" class="section">
+      <div class="container">
+        <p class="kicker">Para quem é</p>
+        <h2>Público-alvo do Tagarela</h2>
+        <div class="audiences">
+          <div class="aud">
+            <h3>Crianças com TEA</h3>
+            <p>Foco em comunicação funcional, com pictogramas claros, botões grandes e reforço positivo.</p>
+          </div>
+          <div class="aud">
+            <h3>Terapeutas</h3>
+            <p>Ferramentas para planejar sessões, acompanhar objetivos e compartilhar relatórios com famílias.</p>
+          </div>
+          <div class="aud">
+            <h3>Famílias & Escolas</h3>
+            <p>Rotinas configuráveis e vocabulário do cotidiano para aumentar a participação em casa e na sala de aula.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EQUIPE -->
+    <section id="equipe" class="section">
+      <div class="container">
+        <p class="kicker">Quem faz</p>
+        <h2>Equipe Tagarela</h2>
+        <div class="team" id="team"></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container">
+        <p class="kicker">Dúvidas frequentes</p>
+        <h2>Perguntas & respostas</h2>
+        <details>
+          <summary>O Tagarela substitui a terapia?</summary>
+          <p>Não. Ele é um apoio para sessões e práticas em casa/escola, sempre orientado por profissionais.</p>
+        </details>
+        <details>
+          <summary>Funciona offline?</summary>
+          <p>Funciona no modo essencial (cartões e fila). Dados sincronizam quando a conexão volta.</p>
+        </details>
+        <details>
+          <summary>Posso adicionar meus próprios cartões?</summary>
+          <p>Sim. Imagens e categorias personalizadas são bem-vindas para refletir a rotina da criança.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="section">
+      <div class="container grid-2">
+        <div>
+          <p class="kicker">Contato</p>
+          <h2>Agende uma demonstração</h2>
+          <p>Preencha o formulário e retornaremos por e-mail. Média de resposta: em até 1 dia útil.</p>
+        </div>
+        <form id="form" novalidate>
+          <div>
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" placeholder="Seu nome" required />
+          </div>
+          <div>
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="voce@exemplo.com" required />
+          </div>
+          <div>
+            <label for="perfil">Perfil</label>
+            <select id="perfil" name="perfil" required>
+              <option value="" selected hidden>Selecione...</option>
+              <option>Família/Responsável</option>
+              <option>Terapeuta</option>
+              <option>Professor(a)</option>
+              <option>Gestão escolar</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div>
+            <label for="mensagem">Mensagem</label>
+            <textarea id="mensagem" name="mensagem" rows="4" placeholder="Conte-nos sobre sua necessidade"></textarea>
+          </div>
+          <button class="btn" type="submit">Enviar</button>
+          <p id="feedback" class="kicker" aria-live="polite" style="margin: 8px 0 0"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div>
+        <strong>Tagarela</strong> — Comunicação que inclui.
+        <div style="font-size: 13px">© <span id="year"></span> Tagarela. Todos os direitos reservados.</div>
+      </div>
+      <div>
+        <a class="btn btn--ghost" href="#top">Voltar ao topo ↑</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // Utilidades
+  const $ = (q, el=document) => el.querySelector(q);
+  const $$ = (q, el=document) => Array.from(el.querySelectorAll(q));
+
+  // -------------------
+  // MENU MÓVEL
+  // -------------------
+  function toggleMenu(){ $('#menu').classList.toggle('open'); }
+  $$('#menu a').forEach(a=>a.addEventListener('click',()=>$('#menu').classList.remove('open')));
+
+  // Smooth scroll
+  $$('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const id = a.getAttribute('href');
+      if(id.length>1){
+        const el = document.querySelector(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      }
+    })
+  });
+
+  // -------------------
+  // EQUIPAJE FICTÍCIO
+  // -------------------
+  const equipe = [
+    { nome: 'Ana Pupo', role: 'Designer e Front-End', tags: ['WEB', 'Acessibilidade', 'Figma'] },
+    { nome: 'Ana Cristina', role: 'Artigo e Front-End', tags: ['Acessibilidade', 'Web'] },
+    { nome: 'Murilo', role: 'Mobile', tags: ['Desenvolvedor', 'Aplicativo'] },
+    { nome: 'Renato', role: 'Back-end', tags: ['Relatórios', 'Dados'] },
+    { nome: 'Saulo', role: 'Inteligência Artificial', tags: ['Relatórios', 'Dados'] },
+  ];
+  const teamEl = $('#team');
+  equipe.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'person';
+    el.innerHTML = `
+      <div class="avatar" aria-hidden="true">${p.nome.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+      <div>
+        <strong>${p.nome}</strong>
+        <div class="role">${p.role}</div>
+      </div>
+      <div class="tags">${p.tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>
+    `;
+    teamEl.appendChild(el);
+  });
+
+  // -------------------
+  // INTERAÇÕES INFANTIS
+  // -------------------
+  const mockup = $('.mockup');
+  let fila = [];
+
+  // Barra de frase visual
+  const barraFrase = document.createElement('div');
+  barraFrase.style.marginTop = '12px';
+  barraFrase.style.fontWeight = '700';
+  barraFrase.style.fontSize = '16px';
+  barraFrase.style.textAlign = 'center';
+  barraFrase.style.color = 'var(--brand)';
+  barraFrase.style.minHeight = '24px';
+  mockup.appendChild(barraFrase);
+
+  // Botão "Falar frase"
+  const btnFrase = document.createElement('button');
+  btnFrase.textContent = "🔊 Falar frase";
+  btnFrase.className = "btn";
+  btnFrase.style.marginTop = "10px";
+  btnFrase.style.width = '100%';
+  btnFrase.onclick = ()=>{
+    if(fila.length){
+      falar(fila.join(" "));
+      fila = [];
+      atualizarFila();
+    }
+  };
+  mockup.appendChild(btnFrase);
+
+  // Sons divertidos
+  const somPop = new Audio("https://freesound.org/data/previews/341/341695_3248244-lq.mp3"); // pop simples
+
+  // Fala do Google
+  function falar(texto){
+    const utter = new SpeechSynthesisUtterance(texto);
+    utter.lang = "pt-BR";
+    utter.rate = 0.9;
+    utter.pitch = 1.2;
+    speechSynthesis.speak(utter);
+  }
+
+  // Interação com cartões
+  $$('.app-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const palavra = card.textContent.trim();
+      fila.push(palavra);
+      atualizarFila();
+
+      // animação divertida
+      card.animate([
+        { transform: 'translateY(0) scale(1)', offset: 0 },
+        { transform: 'translateY(-15px) scale(1.1)', offset: 0.5 },
+        { transform: 'translateY(0) scale(1)', offset: 1 }
+      ], { duration: 300, easing: 'ease-out' });
+
+      // efeito sonoro
+      somPop.currentTime = 0;
+      somPop.play();
+
+      // fala a palavra
+      falar(palavra);
+    });
+  });
+
+  function atualizarFila(){
+    barraFrase.textContent = fila.join(" ");
+  }
+
+  // -------------------
+  // FORMULÁRIO
+  // -------------------
+  const form = $('#form');
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const missing = Object.entries(data).filter(([k,v])=>['nome','email','perfil'].includes(k) && !String(v).trim());
+    const feedback = $('#feedback');
+    if(missing.length){
+      feedback.textContent = 'Por favor, preencha os campos obrigatórios.';
+      feedback.style.color = 'var(--accent)';
+      return;
+    }
+    feedback.textContent = 'Mensagem enviada! Em breve retornaremos ao seu e-mail.';
+    feedback.style.color = 'var(--brand)';
+    form.reset();
+  });
+
+  // Ano dinâmico
+  $('#year').textContent = new Date().getFullYear();
+</script>
+
+<style>
+  /* Animações infantis dos cards */
+  .app-card {
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .app-card:hover {
+    transform: translateY(-5px) rotate(-2deg);
+    box-shadow: 0 12px 25px rgba(0,0,0,.25);
+  }
+  .mockup button.btn:hover {
+    transform: scale(1.05);
+  }
+</style>
+</body>
+</html>
